@@ -1,9 +1,11 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AppProvider, useApp } from './context/AppContext';
-import Navbar from './components/common/Navbar';
+import { GuidanceProvider } from './context/GuidanceContext';
 
 import AuthLayout from './layouts/AuthLayout';
+import PublicLayout from './layouts/PublicLayout';
+import AppLayout from './layouts/AppLayout';
 import OfficerLayout from './layouts/OfficerLayout';
 import AdminLayout from './layouts/AdminLayout';
 
@@ -13,6 +15,9 @@ import Register from './pages/Register';
 import ProfileSetup from './pages/ProfileSetup';
 import Dashboard from './pages/Dashboard';
 import RoadmapPage from './pages/RoadmapPage';
+import LearningWorkspace from './pages/LearningWorkspace';
+import DoubtsGuidance from './pages/DoubtsGuidance';
+import ScenarioAssessment from './pages/ScenarioAssessment';
 import Quiz from './pages/Quiz';
 import Profile from './pages/Profile';
 import AdminDashboard from './pages/AdminDashboard';
@@ -28,63 +33,64 @@ function RequireRole({ role, children }) {
 
 function AppRoutes() {
   return (
-    <>
-      <Navbar />
-      <Routes>
-      <Route path="/" element={<Landing />} />
+    <Routes>
+      <Route element={<PublicLayout />}>
+        <Route path="/" element={<Landing />} />
 
-      <Route element={<AuthLayout />}>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/profile-setup" element={<ProfileSetup />} />
+        <Route element={<AuthLayout />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/profile-setup" element={<ProfileSetup />} />
+        </Route>
+
+        <Route path="/404" element={<NotFound />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
 
       <Route
         element={
           <RequireRole role="officer">
-            <OfficerLayout />
+            <AppLayout />
           </RequireRole>
         }
       >
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/roadmap" element={<RoadmapPage />} />
-        <Route path="/profile" element={<Profile />} />
-      </Route>
+        <Route element={<OfficerLayout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/roadmap" element={<RoadmapPage />} />
+          <Route path="/learning-workspace" element={<LearningWorkspace />} />
+          <Route path="/doubts-guidance" element={<DoubtsGuidance />} />
+          <Route path="/scenario-assessment" element={<ScenarioAssessment />} />
+          <Route path="/profile" element={<Profile />} />
+        </Route>
 
-      {/* Quiz is a full-page experience without the standard chrome, but still requires an officer session */}
-      <Route
-        path="/quiz/:id"
-        element={
-          <RequireRole role="officer">
-            <Quiz />
-          </RequireRole>
-        }
-      />
+        {/* Full-page quiz shares the authenticated shell without an extra page container. */}
+        <Route path="/quiz/:id" element={<Quiz />} />
+      </Route>
 
       <Route
         element={
           <RequireRole role="admin">
-            <AdminLayout />
+            <AppLayout />
           </RequireRole>
         }
       >
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/colleagues/:id" element={<AdminColleagueDetail />} />
+        <Route element={<AdminLayout />}>
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/colleagues/:id" element={<AdminColleagueDetail />} />
+        </Route>
       </Route>
-
-      <Route path="/404" element={<NotFound />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </>
+    </Routes>
   );
 }
 
 export default function App() {
   return (
     <AppProvider>
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
+      <GuidanceProvider>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </GuidanceProvider>
     </AppProvider>
   );
 }

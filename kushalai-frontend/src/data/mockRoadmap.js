@@ -5,55 +5,55 @@
 export const roadmapNodes = [
   {
     id: 'n1', courseId: 'c-python-basics', status: 'completed',
-    domain: 'Technical', prereqs: [], x: 6, y: 18
+    domain: 'Technical', prereqs: [], x: 6, y: 20
   },
   {
     id: 'n2', courseId: 'c-python-data-analysis', status: 'completed',
-    domain: 'Technical', prereqs: ['n1'], x: 22, y: 8
+    domain: 'Technical', prereqs: ['n1'], x: 21, y: 20
   },
   {
     id: 'n3', courseId: 'c-pandas-numpy', status: 'completed',
-    domain: 'Technical', prereqs: ['n2'], x: 38, y: 20
+    domain: 'Technical', prereqs: ['n2'], x: 36, y: 20
   },
   {
     id: 'n4', courseId: 'c-sql-foundations', status: 'completed',
-    domain: 'Technical', prereqs: [], x: 6, y: 50
+    domain: 'Technical', prereqs: [], x: 6, y: 67
   },
   {
     id: 'n5', courseId: 'c-statistical-programming', status: 'current',
-    domain: 'Statistical', prereqs: ['n3'], x: 54, y: 10
+    domain: 'Statistical', prereqs: ['n3'], x: 51, y: 20
   },
   {
     id: 'n6', courseId: 'c-data-engineering', status: 'recommended',
-    domain: 'Technical', prereqs: ['n4'], x: 22, y: 60
+    domain: 'Technical', prereqs: ['n4'], x: 22, y: 67
   },
   {
     id: 'n7', courseId: 'c-data-privacy', status: 'recommended',
-    domain: 'Digital Governance', prereqs: [], x: 6, y: 82
+    domain: 'Digital Governance', prereqs: [], x: 53, y: 76
   },
   {
     id: 'n8', courseId: 'c-ml-fundamentals', status: 'locked',
-    domain: 'Technical', prereqs: ['n5'], x: 70, y: 22
+    domain: 'Technical', prereqs: ['n5'], x: 67, y: 20
   },
   {
     id: 'n9', courseId: 'c-gis-intro', status: 'locked',
-    domain: 'Technical', prereqs: ['n3'], x: 54, y: 38
+    domain: 'Technical', prereqs: ['n3'], x: 36, y: 44
   },
   {
     id: 'n10', courseId: 'c-analytics-track', status: 'locked',
-    domain: 'Statistical', prereqs: ['n5', 'n6'], x: 38, y: 72
+    domain: 'Statistical', prereqs: ['n5', 'n6'], x: 75, y: 55
   },
   {
     id: 'n11', courseId: 'c-cloud-fundamentals', status: 'locked',
-    domain: 'Digital Governance', prereqs: ['n7'], x: 22, y: 90
+    domain: 'Digital Governance', prereqs: ['n7'], x: 72, y: 87
   },
   {
     id: 'n12', courseId: 'c-applied-ai-stats', status: 'locked',
-    domain: 'Technical', prereqs: ['n8'], x: 86, y: 34
+    domain: 'Technical', prereqs: ['n8'], x: 83, y: 20
   },
   {
     id: 'n13', courseId: 'c-comms-leadership', status: 'completed',
-    domain: 'Behavioural', prereqs: [], x: 86, y: 60
+    domain: 'Behavioural', prereqs: [], x: 90, y: 77
   }
 ];
 

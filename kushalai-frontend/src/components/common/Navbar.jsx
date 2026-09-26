@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   LogOut,
   Menu,
+  GraduationCap,
   Route as RouteIcon,
   ShieldCheck,
   X
@@ -14,8 +15,9 @@ import { useApp } from '../../context/AppContext';
 
 const OFFICER_LINKS = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, end: true },
-  { to: '/profile', label: 'Profile', icon: ShieldCheck, end: true },
-  { to: '/roadmap', label: 'Roadmap', icon: RouteIcon, end: true }
+  { to: '/roadmap', label: 'Roadmap', icon: RouteIcon, end: true },
+  { to: '/learning-workspace', label: 'LEARNING WORKSPACE', icon: GraduationCap, end: true },
+  { to: '/profile', label: 'Profile', icon: ShieldCheck, end: true }
 ];
 
 const ADMIN_LINKS = [
@@ -44,11 +46,20 @@ export default function Navbar() {
   const navigate = useNavigate();
   const [openMenu, setOpenMenu] = useState(null);
   const headerRef = useRef(null);
-  const isOfficer = user?.role === 'officer';
-  const isAdmin = user?.role === 'admin';
+
+  // Check if current view is a public landing page or auth page
+  const isAuthRoute = location.pathname.startsWith('/login') || location.pathname.startsWith('/register');
+  const isLandingRoute = location.pathname === '/';
+  const forcePublic = isAuthRoute || isLandingRoute;
+
+  const activeUser = forcePublic ? null : user;
+  const isOfficer = activeUser?.role === 'officer';
+  const isAdmin = activeUser?.role === 'admin';
   const links = isAdmin ? ADMIN_LINKS : isOfficer ? OFFICER_LINKS : [];
-  const homePath = user?.role === 'admin' ? '/admin' : user ? '/dashboard' : '/';
+  const homePath = activeUser?.role === 'admin' ? '/admin' : activeUser ? '/dashboard' : '/';
   const roleLabel = isAdmin ? 'Administrator' : 'Officer';
+  const isLearningWorkspace = ['/learning-workspace', '/doubts-guidance', '/scenario-assessment']
+    .some((path) => location.pathname.startsWith(path));
 
   useEffect(() => {
     setOpenMenu(null);
@@ -88,24 +99,29 @@ export default function Navbar() {
       <header className="navbar navbar-sticky" ref={headerRef}>
         <div className="container navbar-inner">
           
-          {/* Original Logo Slot with Exact Requested Markup */}
+          {/* Logo Slot */}
           <NavLink to={homePath} className="navbar-logo-slot" aria-label="KushalAI home" onClick={closeMenu}>
             <span className="navbar-logo-crop">
               <img className="navbar-logo-crop-image" src="/assets/kushalAI_logo.png" alt="KushalAI" />
             </span>
           </NavLink>
 
-          {/* Navigation Links (Dashboard, Profile, Roadmap directly accessible) */}
+          {/* Navigation Links */}
           {links.length > 0 && (
             <nav className="nav-links" aria-label="Main navigation">
               {links.map((link) => (
-                <RouteLink key={link.to} link={link} onNavigate={closeMenu} />
+                <RouteLink
+                  key={link.to}
+                  link={link}
+                  onNavigate={closeMenu}
+                  activeOverride={link.to === '/learning-workspace' && isLearningWorkspace}
+                />
               ))}
             </nav>
           )}
 
-          {/* User Actions & Profile */}
-          {user ? (
+          {/* User Actions & Profile OR Public Actions */}
+          {activeUser ? (
             <div className="navbar-actions">
               <button
                 className="navbar-icon-button navbar-notifications"
@@ -121,16 +137,16 @@ export default function Navbar() {
                 <button
                   className="navbar-account-trigger"
                   type="button"
-                  aria-label={`Account options for ${user.name}, ${roleLabel}`}
+                  aria-label={`Account options for ${activeUser.name}, ${roleLabel}`}
                   aria-expanded={openMenu === 'account'}
                   aria-controls="navbar-account-menu"
                   onClick={() => setOpenMenu((current) => current === 'account' ? null : 'account')}
                 >
                   <div className="navbar-custom-avatar" style={{ width: '36px', height: '36px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
-                    <img src="/assets/pfp.jpg" alt={user.name} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 20%', display: 'block' }} />
+                    <img src="/assets/pfp.jpg" alt={activeUser.name} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 20%', display: 'block' }} />
                   </div>
                   <span className="navbar-user-copy">
-                    <span className="navbar-user-name">{user.name}</span>
+                    <span className="navbar-user-name">{activeUser.name}</span>
                     <span className="navbar-user-role">{roleLabel}</span>
                   </span>
                   <ChevronDown className={`navbar-account-chevron ${openMenu === 'account' ? 'rotate' : ''}`} size={14} aria-hidden="true" />
@@ -140,12 +156,12 @@ export default function Navbar() {
                   <div className="navbar-popover navbar-account-menu animate-popover" id="navbar-account-menu">
                     <div className="navbar-account-summary">
                       <div className="navbar-custom-avatar" style={{ width: '40px', height: '40px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
-                        <img src="/assets/pfp.jpg" alt={user.name} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 20%', display: 'block' }} />
+                        <img src="/assets/pfp.jpg" alt={activeUser.name} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 20%', display: 'block' }} />
                       </div>
                       <div className="navbar-account-details">
-                        <strong>{user.name}</strong>
+                        <strong>{activeUser.name}</strong>
                         <span>{roleLabel}</span>
-                        <span className="text-meta">{user.designation || user.department}</span>
+                        <span className="text-meta">{activeUser.designation || activeUser.department}</span>
                       </div>
                     </div>
                     <div className="navbar-menu-divider" />
@@ -180,12 +196,17 @@ export default function Navbar() {
         {/* Mobile Navigation Dropdown */}
         {openMenu === 'mobile' && (
           <nav className="container navbar-mobile-menu animate-mobile-menu" id="navbar-mobile-menu" aria-label="Mobile navigation">
-            {isOfficer && (
+            {activeUser && isOfficer && (
               <>
                 <div className="navbar-mobile-group">
                   <span className="navbar-mobile-section-label">Navigation</span>
                   {OFFICER_LINKS.map((link) => (
-                    <RouteLink key={link.to} link={link} onNavigate={closeMenu} />
+                    <RouteLink
+                      key={link.to}
+                      link={link}
+                      onNavigate={closeMenu}
+                      activeOverride={link.to === '/learning-workspace' && isLearningWorkspace}
+                    />
                   ))}
                 </div>
                 <div className="navbar-mobile-group">
@@ -197,7 +218,7 @@ export default function Navbar() {
                 </div>
               </>
             )}
-            {isAdmin && (
+            {activeUser && isAdmin && (
               <div className="navbar-mobile-group">
                 <span className="navbar-mobile-section-label">Administration</span>
                 <RouteLink link={ADMIN_LINKS[0]} onNavigate={closeMenu} />
@@ -207,7 +228,7 @@ export default function Navbar() {
                 </button>
               </div>
             )}
-            {!user && (
+            {!activeUser && (
               <div className="navbar-mobile-group navbar-mobile-public">
                 <span className="navbar-mobile-section-label">Get Started</span>
                 <Link to="/login" onClick={closeMenu} className="nav-link">Log in</Link>
@@ -219,10 +240,6 @@ export default function Navbar() {
       </header>
 
       <style>{`
-        /* =====================================================
-           MODERN NAVBAR STYLING (Orange Hover Accents)
-        ====================================================== */
-
         .navbar {
           background: rgba(255, 255, 255, 0.9);
           backdrop-filter: blur(16px);
@@ -246,7 +263,6 @@ export default function Navbar() {
           margin: 0 auto;
         }
 
-        /* Original Logo Slot with exact requested classes */
         .navbar-logo-slot {
           text-decoration: none;
           display: flex;
@@ -277,7 +293,6 @@ export default function Navbar() {
           transform: translateX(7px);
         }
 
-        /* Navigation Links container */
         .nav-links {
           display: flex;
           align-items: center;
@@ -308,7 +323,6 @@ export default function Navbar() {
           font-weight: 600;
         }
 
-        /* Account Dropdown Chevron */
         .navbar-account-chevron {
           transition: transform 0.2s ease;
         }
@@ -317,7 +331,6 @@ export default function Navbar() {
           transform: rotate(180deg);
         }
 
-        /* Popovers & Menus */
         .navbar-popover-anchor {
           position: relative;
         }
@@ -340,17 +353,10 @@ export default function Navbar() {
         }
 
         @keyframes popoverFadeIn {
-          0% {
-            opacity: 0;
-            transform: translateY(8px) scale(0.98);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-          }
+          0% { opacity: 0; transform: translateY(8px) scale(0.98); }
+          100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* Actions & User Account Trigger */
         .navbar-actions {
           display: flex;
           align-items: center;
@@ -418,7 +424,6 @@ export default function Navbar() {
           color: #64748b;
         }
 
-        /* Account Popover Menu */
         .navbar-account-menu {
           right: 0;
           left: auto;
@@ -491,7 +496,6 @@ export default function Navbar() {
           color: #dc2626;
         }
 
-        /* Public Actions (Log in / Register) */
         .navbar-public-actions {
           display: flex;
           align-items: center;
@@ -524,7 +528,6 @@ export default function Navbar() {
           background: #c2410c !important;
         }
 
-        /* Mobile Menu */
         .nav-mobile-toggle {
           display: none;
         }
@@ -544,14 +547,8 @@ export default function Navbar() {
         }
 
         @keyframes mobileMenuSlide {
-          0% {
-            opacity: 0;
-            transform: translateY(-10px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          0% { opacity: 0; transform: translateY(-10px); }
+          100% { opacity: 1; transform: translateY(0); }
         }
 
         .navbar-mobile-group {
@@ -561,9 +558,7 @@ export default function Navbar() {
           margin-bottom: 16px;
         }
 
-        .navbar-mobile-group:last-child {
-          margin-bottom: 0;
-        }
+        .navbar-mobile-group:last-child { margin-bottom: 0; }
 
         .navbar-mobile-section-label {
           font-size: 12px;
@@ -581,28 +576,17 @@ export default function Navbar() {
           padding: 10px 14px;
         }
 
-        .navbar-mobile-public .nav-link {
-          justify-content: flex-start;
-        }
+        .navbar-mobile-public .nav-link { justify-content: flex-start; }
 
         .mobile-register-link {
           color: #ea580c !important;
           font-weight: 600;
         }
 
-        /* Responsive Breakpoint */
         @media (max-width: 760px) {
-          .nav-links, .navbar-actions, .navbar-public-actions {
-            display: none;
-          }
-
-          .nav-mobile-toggle {
-            display: inline-flex;
-          }
-
-          .navbar-mobile-menu {
-            display: block;
-          }
+          .nav-links, .navbar-actions, .navbar-public-actions { display: none; }
+          .nav-mobile-toggle { display: inline-flex; }
+          .navbar-mobile-menu { display: block; }
         }
       `}</style>
     </>

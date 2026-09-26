@@ -89,10 +89,10 @@ export default function ActivityHeatmap({ days }) {
               width: '100%',
               minHeight: `${7 * CELL + 6 * GAP}px`,
 
-              /* WHITE WEEK GRID */
               background: '#ffffff',
 
-              border: '1px solid #f0f0f0',
+              // BLACK WEEK GRID
+              border: '1px solid #000000',
               borderRadius: '4px',
 
               padding: '3px',
@@ -122,7 +122,8 @@ export default function ActivityHeatmap({ days }) {
                   background:
                     LEVEL_COLORS[day.level] || LEVEL_COLORS[0],
 
-                  border: '1px solid #d0d7de',
+                  // BLACK CELL GRID
+                  border: '1px solid #000000',
 
                   boxSizing: 'border-box'
                 }}
@@ -140,7 +141,10 @@ export default function ActivityHeatmap({ days }) {
                   height: `${CELL}px`,
                   borderRadius: '3px',
                   background: '#ffffff',
-                  border: '1px solid #f0f0f0',
+
+                  // BLACK EMPTY CELL GRID
+                  border: '1px solid #000000',
+
                   boxSizing: 'border-box'
                 }}
               />
@@ -170,7 +174,9 @@ export default function ActivityHeatmap({ days }) {
               height: '12px',
               borderRadius: '3px',
               background: c,
-              border: '1px solid #d0d7de'
+
+              // BLACK LEGEND BORDER
+              border: '1px solid #000000'
             }}
           />
         ))}
