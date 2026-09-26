@@ -1,0 +1,66 @@
+:root {
+  /* Colors */
+  --color-primary: #1B4CA1;
+  --color-secondary: #1663C0;
+  --color-orange: #F5A12A;
+  --color-cream: #FCE5CC;
+  --color-offwhite: #FEF8F1;
+  --color-white: #FFFFFF;
+  --color-text: #1F1F23;
+  --color-text-secondary: #39393B;
+  --color-border: #C9C9C9;
+
+  --color-success: #1E8A5F;
+  --color-success-bg: #E6F4EC;
+  --color-danger: #C4432B;
+  --color-danger-bg: #FBEAE6;
+  --color-warning: #B8791F;
+  --color-warning-bg: #FBF0DF;
+  --color-locked: #9A9AA0;
+  --color-locked-bg: #F0F0F1;
+
+  /* Typography */
+  --font-primary: 'Poppins', 'Inter', sans-serif;
+
+  --fs-hero: 42px;
+  --fs-page-heading: 34px;
+  --fs-section-heading: 27px;
+  --fs-card-heading: 21px;
+  --fs-stat: 28px;
+  --fs-body: 15px;
+  --fs-nav: 14px;
+  --fs-button: 15px;
+  --fs-meta: 12.5px;
+
+  /* Spacing (8px system) */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-7: 56px;
+  --space-8: 64px;
+  --space-9: 80px;
+  --space-10: 96px;
+
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-input: 11px;
+  --radius-card: 16px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+
+  /* Shadows */
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.06);
+  --shadow-card-hover: 0 8px 28px rgba(27, 76, 161, 0.12);
+  --shadow-drawer: -8px 0 32px rgba(0, 0, 0, 0.10);
+
+  /* Transitions */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --t-fast: 180ms var(--ease);
+  --t-normal: 260ms var(--ease);
+
+  /* Layout */
+  --container-max: 1400px;
+}
