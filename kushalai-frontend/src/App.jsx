@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AppProvider, useApp } from './context/AppContext';
+import Navbar from './components/common/Navbar';
 
 import AuthLayout from './layouts/AuthLayout';
 import OfficerLayout from './layouts/OfficerLayout';
@@ -13,7 +14,6 @@ import ProfileSetup from './pages/ProfileSetup';
 import Dashboard from './pages/Dashboard';
 import RoadmapPage from './pages/RoadmapPage';
 import Quiz from './pages/Quiz';
-import SkillPassport from './pages/SkillPassport';
 import Profile from './pages/Profile';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminColleagueDetail from './pages/AdminColleagueDetail';
@@ -28,7 +28,9 @@ function RequireRole({ role, children }) {
 
 function AppRoutes() {
   return (
-    <Routes>
+    <>
+      <Navbar />
+      <Routes>
       <Route path="/" element={<Landing />} />
 
       <Route element={<AuthLayout />}>
@@ -46,7 +48,6 @@ function AppRoutes() {
       >
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/roadmap" element={<RoadmapPage />} />
-        <Route path="/skills" element={<SkillPassport />} />
         <Route path="/profile" element={<Profile />} />
       </Route>
 
@@ -72,8 +73,9 @@ function AppRoutes() {
       </Route>
 
       <Route path="/404" element={<NotFound />} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
   );
 }
 

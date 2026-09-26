@@ -4,6 +4,7 @@ import { Award, BookOpenCheck, Target, Flame, TrendingUp, ArrowRight } from 'luc
 import { Card, Button, StatCard, CircularProgress, ProgressBar, StatusBadge } from '../components/common/UI';
 import ActivityHeatmap from '../components/dashboard/ActivityHeatmap';
 import QuizTrendChart from '../components/dashboard/QuizTrendChart';
+import SkillPassport from './SkillPassport';
 import { useApp } from '../context/AppContext';
 import { skillDomains, domainAverage, statusFromMastery } from '../data/mockSkills';
 import { generateActivityHeatmap } from '../data/mockQuizzes';
@@ -71,28 +72,11 @@ export default function Dashboard() {
         </Card>
       </div>
 
-      <div className="grid grid-3" style={{ alignItems: 'stretch' }}>
-        <Card style={{ gridColumn: 'span 2' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-            <h3 className="text-card-heading">Skill Passport</h3>
-            <Button variant="ghost" size="sm" onClick={() => navigate('/skills')}>View full passport</Button>
-          </div>
-          <div className="grid grid-2" style={{ marginTop: 10 }}>
-            {skillDomains.map((d) => {
-              const avg = domainAverage(d);
-              return (
-                <div key={d.id} style={{ marginBottom: 10 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-                    <span style={{ fontSize: 14, fontWeight: 600 }}>{d.name}</span>
-                    <StatusBadge status={statusFromMastery(avg)} />
-                  </div>
-                  <ProgressBar value={avg} />
-                </div>
-              );
-            })}
-          </div>
-        </Card>
-        <Card>
+      <div className="grid grid-3" style={{ alignItems: 'start', gridTemplateColumns: 'minmax(0, 1.55fr) minmax(300px, 0.8fr)', columnGap: 'var(--space-3)', rowGap: 'var(--space-3)' }}>
+        <div style={{ gridColumn: 'span 2', alignSelf: 'start' }}>
+          <SkillPassport embedded />
+        </div>
+        <Card style={{ alignSelf: 'start' }}>
           <h3 className="text-card-heading" style={{ marginBottom: 10 }}>Quiz trend</h3>
           <QuizTrendChart data={quizHistory} />
         </Card>

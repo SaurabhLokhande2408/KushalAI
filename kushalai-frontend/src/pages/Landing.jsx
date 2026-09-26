@@ -12,20 +12,6 @@ const FEATURES = [
 export default function Landing() {
   return (
     <div style={{ minHeight: '100vh' }}>
-      <header className="navbar">
-        <div className="container navbar-inner">
-          <div className="navbar-logo-slot">
-            <div className="navbar-logo-crop">
-              <img className="navbar-logo-crop-image" src="/assets/kushalAI_logo.png" alt="KushalAI" />
-            </div>
-          </div>
-          <div style={{ display: 'flex', gap: 12 }}>
-            <Link to="/login"><Button variant="secondary" size="sm">Log in</Button></Link>
-            <Link to="/register"><Button size="sm">Register</Button></Link>
-          </div>
-        </div>
-      </header>
-
       <section className="container" style={{ padding: 'var(--space-9) 0 var(--space-6)', textAlign: 'center' }}>
         <div className="text-meta" style={{ color: 'var(--color-secondary)', fontWeight: 600, marginBottom: 12 }}>
           For India's Official Statistical System

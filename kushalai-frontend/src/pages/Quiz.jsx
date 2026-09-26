@@ -71,7 +71,6 @@ export default function Quiz() {
   return (
     <div className="container page-shell" style={{ maxWidth: 720 }}>
       <div style={{ marginBottom: 'var(--space-3)' }}>
-        <img src="/assets/kushalAI_logo.png" alt="KushalAI" style={{ height: 40, marginBottom: 12 }} />
         <div className="text-meta" style={{ fontWeight: 600 }}>{course.title}</div>
       </div>
 
