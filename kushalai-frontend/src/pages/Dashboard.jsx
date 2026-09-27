@@ -20,6 +20,7 @@ import {
   Skeleton
 } from '../components/common/UI';
 
+import BrandCurveAnimation from '../components/common/BrandCurveAnimation';
 import ActivityHeatmap from '../components/dashboard/ActivityHeatmap';
 import QuizTrendChart from '../components/dashboard/QuizTrendChart';
 import ScenarioAssessmentAnalytics from '../components/dashboard/ScenarioAssessmentAnalytics';
@@ -38,23 +39,35 @@ import { generateActivityHeatmap } from '../data/mockQuizzes';
 function DashboardLoadingSkeleton() {
   return (
     <div className="dashboard-loading-skeleton" aria-busy="true" aria-label="Loading dashboard">
-      <Card style={{ minHeight: 176, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 20 }}>
-        <div style={{ display: 'grid', gap: 12, width: 'min(100%, 480px)' }}>
-          <Skeleton width="42%" height={28} />
-          <Skeleton width="76%" height={14} />
-          <Skeleton width="54%" height={12} />
+      <div className="dashboard-loading-top-layout">
+        <div className="dashboard-loading-art" aria-hidden="true">
+          <Skeleton width="68%" height={5} />
+          <Skeleton width="46%" height={5} />
+          <Skeleton width="59%" height={5} />
         </div>
-        <Skeleton width={150} height={42} radius={8} />
-      </Card>
 
-      <div className="dashboard-loading-stats">
-        {Array.from({ length: 4 }, (_, index) => (
-          <Card key={index} style={{ minHeight: 106, display: 'grid', alignContent: 'center', gap: 10 }}>
-            <Skeleton width="58%" height={13} />
-            <Skeleton width="36%" height={25} />
-            <Skeleton width="72%" height={11} />
-          </Card>
-        ))}
+        <Card className="dashboard-loading-greeting" style={{ minHeight: 272, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 20 }}>
+          <div style={{ display: 'grid', gap: 12, width: 'min(100%, 480px)' }}>
+            <Skeleton width="52%" height={28} />
+            <Skeleton width="82%" height={14} />
+            <Skeleton width="68%" height={12} />
+          </div>
+          <Skeleton width={150} height={42} radius={8} />
+        </Card>
+
+        <div className="dashboard-loading-auth-animation" aria-hidden="true">
+          <BrandCurveAnimation />
+        </div>
+
+        <div className="dashboard-loading-stats">
+          {Array.from({ length: 4 }, (_, index) => (
+            <Card key={index} style={{ minHeight: 138, display: 'grid', alignContent: 'center', gap: 10 }}>
+              <Skeleton width="58%" height={13} />
+              <Skeleton width="36%" height={25} />
+              <Skeleton width="72%" height={11} />
+            </Card>
+          ))}
+        </div>
       </div>
 
       <div className="grid grid-3" style={{ marginBottom: 'var(--space-4)', alignItems: 'stretch' }}>
@@ -93,9 +106,42 @@ function DashboardLoadingSkeleton() {
           gap: var(--space-4);
         }
 
+        .dashboard-loading-top-layout {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+          gap: 16px;
+          margin-bottom: var(--space-4);
+        }
+
+        .dashboard-loading-art {
+          grid-column: 1;
+          grid-row: 1;
+          min-height: 220px;
+          display: grid;
+          align-content: center;
+          justify-items: center;
+          gap: 42px;
+        }
+
+        .dashboard-loading-greeting {
+          grid-column: 2;
+          grid-row: 1;
+        }
+
+        .dashboard-loading-auth-animation {
+          position: relative;
+          grid-column: 2;
+          grid-row: 2;
+          min-height: 220px;
+          overflow: hidden;
+        }
+
         .dashboard-loading-stats {
           display: grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
+          grid-column: 1;
+          grid-row: 2;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          grid-template-rows: repeat(2, minmax(0, 1fr));
           gap: 16px;
         }
 
@@ -105,9 +151,28 @@ function DashboardLoadingSkeleton() {
           gap: var(--space-3);
         }
 
-        @media (max-width: 1100px) {
+        @media (max-width: 900px) {
+          .dashboard-loading-top-layout {
+            grid-template-columns: minmax(0, 1fr);
+          }
+
+          .dashboard-loading-art {
+            display: none;
+          }
+
+          .dashboard-loading-greeting {
+            grid-column: 1;
+            grid-row: 1;
+          }
+
+          .dashboard-loading-auth-animation {
+            grid-column: 1;
+            grid-row: 2;
+          }
+
           .dashboard-loading-stats {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-column: 1;
+            grid-row: 3;
           }
         }
 
@@ -120,6 +185,7 @@ function DashboardLoadingSkeleton() {
         @media (max-width: 600px) {
           .dashboard-loading-stats {
             grid-template-columns: 1fr;
+            grid-template-rows: none;
           }
         }
       `}</style>
@@ -319,6 +385,36 @@ export default function Dashboard() {
 
   return (
     <div>
+      <div className="dashboard-top-layout">
+
+      <div className="dashboard-gap-art" aria-hidden="true">
+        <svg className="dashboard-gap-art__svg" viewBox="0 0 800 260" preserveAspectRatio="none">
+          <path
+            id="dashboard-gap-curve"
+            className="dashboard-gap-art__line"
+            pathLength="100"
+            d="M32 204 C148 56 276 38 382 132 S602 246 768 72"
+          />
+          <text className="dashboard-gap-art__glyph">
+            <textPath href="#dashboard-gap-curve" startOffset="8%">
+              क
+              <animate className="dashboard-gap-art__motion" attributeName="startOffset" from="-4%" to="104%" dur="22s" repeatCount="indefinite" />
+            </textPath>
+          </text>
+          <text className="dashboard-gap-art__glyph dashboard-gap-art__glyph--secondary">
+            <textPath href="#dashboard-gap-curve" startOffset="42%">
+              क
+              <animate className="dashboard-gap-art__motion" attributeName="startOffset" from="-4%" to="104%" dur="26s" begin="-9s" repeatCount="indefinite" />
+            </textPath>
+          </text>
+          <text className="dashboard-gap-art__glyph dashboard-gap-art__glyph--tertiary">
+            <textPath href="#dashboard-gap-curve" startOffset="76%">
+              क
+              <animate className="dashboard-gap-art__motion" attributeName="startOffset" from="-4%" to="104%" dur="30s" begin="-18s" repeatCount="indefinite" />
+            </textPath>
+          </text>
+        </svg>
+      </div>
 
       {/* =========================================================
           HERO
@@ -326,7 +422,6 @@ export default function Dashboard() {
 
       <Card
         style={{
-          marginBottom: 'var(--space-4)',
           background:
             'linear-gradient(135deg, var(--color-primary), var(--color-secondary))',
           color: '#fff'
@@ -405,6 +500,10 @@ export default function Dashboard() {
           </div>
         </div>
       </Card>
+
+      <div className="dashboard-auth-animation" aria-hidden="true">
+        <BrandCurveAnimation />
+      </div>
 {/* =========================================================
           STAT CARDS (Professional Enterprise Redesign)
       ========================================================= */}
@@ -468,11 +567,81 @@ export default function Dashboard() {
       </div>
 
       <style>{`
-        .corporate-stats-grid {
+        .dashboard-top-layout {
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
           gap: 16px;
           margin-bottom: var(--space-4);
+        }
+
+        .dashboard-top-layout > .card {
+          grid-column: 2;
+        }
+
+        .dashboard-gap-art {
+          grid-column: 1;
+          grid-row: 1;
+          min-width: 0;
+          min-height: 220px;
+          overflow: hidden;
+          pointer-events: none;
+        }
+
+        .dashboard-gap-art__svg {
+          display: block;
+          width: 100%;
+          height: 100%;
+          overflow: visible;
+        }
+
+        .dashboard-gap-art__line {
+          fill: none;
+          stroke: rgba(37, 99, 235, 0.22);
+          stroke-width: 2;
+          stroke-linecap: round;
+          stroke-dasharray: 100;
+          stroke-dashoffset: 100;
+          animation: dashboard-curve-draw 2.4s ease-out forwards;
+        }
+
+        .dashboard-gap-art__glyph {
+          fill: rgba(37, 99, 235, 0.55);
+          font-family: var(--font-primary);
+          font-size: 32px;
+          font-weight: 600;
+        }
+
+        .dashboard-gap-art__glyph--secondary {
+          fill: rgba(234, 88, 12, 0.5);
+          font-size: 25px;
+        }
+
+        .dashboard-gap-art__glyph--tertiary {
+          fill: rgba(37, 99, 235, 0.38);
+          font-size: 20px;
+        }
+
+        .dashboard-auth-animation {
+          position: relative;
+          grid-column: 2;
+          grid-row: 2;
+          min-width: 0;
+          min-height: 220px;
+          overflow: hidden;
+          pointer-events: none;
+        }
+
+        @keyframes dashboard-curve-draw {
+          to { stroke-dashoffset: 0; }
+        }
+
+        .corporate-stats-grid {
+          display: grid;
+          grid-column: 1;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          grid-template-rows: repeat(2, minmax(0, 1fr));
+          gap: 16px;
+          margin-bottom: 0;
         }
 
         .corporate-stat-card {
@@ -547,16 +716,53 @@ export default function Dashboard() {
 
         @media (max-width: 1100px) {
           .corporate-stats-grid {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+        }
+
+        @media (max-width: 900px) {
+          .dashboard-top-layout {
+            grid-template-columns: minmax(0, 1fr);
+          }
+
+          .dashboard-gap-art {
+            display: none;
+          }
+
+          .dashboard-top-layout > .card,
+          .corporate-stats-grid {
+            grid-column: 1;
+          }
+
+          .dashboard-auth-animation {
+            grid-column: 1;
+            grid-row: 2;
+          }
+
+          .corporate-stats-grid {
+            grid-row: 3;
           }
         }
 
         @media (max-width: 600px) {
           .corporate-stats-grid {
             grid-template-columns: 1fr;
+            grid-template-rows: none;
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .dashboard-gap-art__line {
+            animation: none;
+            stroke-dashoffset: 0;
+          }
+
+          .dashboard-gap-art__motion {
+            display: none;
           }
         }
       `}</style>
+      </div>
 
       {/* =========================================================
           DISCIPLINE ACTIVITY + COURSE COMPLETION

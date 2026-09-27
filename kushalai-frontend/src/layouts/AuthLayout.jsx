@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
+import BrandCurveAnimation from '../components/common/BrandCurveAnimation';
 
 export default function AuthLayout() {
   return (
@@ -11,41 +12,7 @@ export default function AuthLayout() {
 
       <aside className="auth-brand-panel">
 
-        {/* Abstract Matte Orange 'क' Inspired Curves with Arrowheads */}
-        <svg 
-          className="auth-hero-curves" 
-          viewBox="0 0 1000 1000" 
-          preserveAspectRatio="xMidYMid slice" 
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <defs>
-            <marker 
-              id="arrowhead" 
-              viewBox="0 0 10 10" 
-              refX="6" 
-              refY="5" 
-              markerWidth="6" 
-              markerHeight="6" 
-              orient="auto-start-reverse"
-            >
-              <path d="M 0 1 L 10 5 L 0 9 z" fill="#ea580c" />
-            </marker>
-          </defs>
-
-          <g stroke="#ea580c" fill="none" strokeLinecap="round" markerEnd="url(#arrowhead)">
-            {/* The sweeping vertical stem */}
-            <path d="M 450,-50 C 420,300 480,650 450,980" strokeWidth="4.5" opacity="0.9" className="draw-path" />
-            
-            {/* The abstract left loop of 'क' */}
-            <path d="M 460,350 C 140,280 140,720 460,540" strokeWidth="5.5" opacity="0.95" className="draw-path" />
-            
-            {/* The elegant downward right hook of 'क' */}
-            <path d="M 460,450 C 860,450 890,780 560,940" strokeWidth="4" opacity="0.85" className="draw-path" />
-            
-            {/* An extra startup-style contour borderline */}
-            <path d="M -50,850 C 300,900 600,680 1020,750" strokeWidth="3" opacity="0.5" className="draw-path" />
-          </g>
-        </svg>
+        <BrandCurveAnimation />
 
         <div className="auth-brand-content">
 
@@ -129,28 +96,6 @@ export default function AuthLayout() {
           /* Solid Matte Blue Background */
           background: var(--color-primary);
           color: var(--color-white);
-        }
-
-        /* Abstract Bold Matte Orange SVG Curves */
-        .auth-hero-curves {
-          position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
-          pointer-events: none;
-          z-index: 1;
-        }
-
-        .draw-path {
-          stroke-dasharray: 3000;
-          stroke-dashoffset: 3000;
-          animation: drawLine 5s ease-in-out forwards;
-        }
-
-        @keyframes drawLine {
-          to {
-            stroke-dashoffset: 0;
-          }
         }
 
         .auth-brand-content {
