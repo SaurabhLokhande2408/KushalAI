@@ -45,11 +45,19 @@ export default function BrandCurveAnimation({ className = '' }) {
         .brand-curve-draw {
           stroke-dasharray: 3000;
           stroke-dashoffset: 3000;
-          animation: brand-curve-draw 5s ease-in-out forwards;
+          animation: brand-curve-draw 3.2s ease-in-out infinite alternate;
         }
 
         @keyframes brand-curve-draw {
+          from { stroke-dashoffset: 3000; }
           to { stroke-dashoffset: 0; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .brand-curve-draw {
+            animation: none;
+            stroke-dashoffset: 0;
+          }
         }
       `}</style>
     </>
