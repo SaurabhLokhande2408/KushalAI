@@ -171,6 +171,19 @@ export const courses = [
     currentMastery: 91,
     requiredMastery: 70,
     reason: 'Already mastered — kept visible for completeness.'
+  },
+  {
+    id: 'c-public-data-visualization',
+    title: 'Data Visualization for Public Policy',
+    domain: 'Statistical',
+    skill: 'Data Visualization',
+    source: 'NSSTA / TPAC',
+    difficulty: 'Intermediate',
+    estTime: '8 hrs',
+    description: 'Design clear, accessible visual explanations of official data for policy briefs, public reports and decision-makers.',
+    currentMastery: 46,
+    requiredMastery: 72,
+    reason: 'Builds on your statistical analysis competency and strengthens evidence communication for policy decisions.'
   }
 ];
 

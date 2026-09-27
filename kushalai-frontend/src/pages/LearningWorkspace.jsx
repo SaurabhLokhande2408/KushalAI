@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowRight, BookOpen, MessageCircle, ShieldCheck } from 'lucide-react';
+import { ArrowRight, BookOpen, MessageCircle, Route, ShieldCheck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Skeleton } from '../components/common/UI';
 
@@ -26,6 +26,18 @@ const MODES = [
     icon: BookOpen,
     accent: 'orange',
   },
+  {
+    number: '03',
+    category: 'DIRECTION',
+    kicker: 'COURSE RECOMMENDATION ENGINE',
+    title: 'Explore Courses',
+    description:
+      'Explore the KushalAI learning catalogue and discover what to learn next through prerequisite readiness, competencies and development goals.',
+    action: 'EXPLORE COURSES',
+    path: '/explore-courses',
+    icon: Route,
+    accent: 'blue',
+  },
 ];
 
 function LearningWorkspaceLoadingSkeleton() {
@@ -51,7 +63,7 @@ function LearningWorkspaceLoadingSkeleton() {
       </div>
 
       <div className="learning-loading-modes">
-        {Array.from({ length: 2 }, (_, index) => (
+        {Array.from({ length: 3 }, (_, index) => (
           <div className="learning-loading-mode" key={index}>
             <div className="learning-loading-mode-meta">
               <div><Skeleton width={48} height={48} radius={14} /><Skeleton width={48} height={48} radius={14} /></div>
@@ -283,6 +295,14 @@ export default function LearningWorkspace() {
             className={`learning-mode learning-mode-${mode.accent}`}
             key={mode.path}
             onClick={() => navigate(mode.path)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                navigate(mode.path);
+              }
+            }}
+            role="link"
+            tabIndex={0}
             style={{ cursor: 'pointer' }}
           >
             {/* Top metadata */}
@@ -307,7 +327,7 @@ export default function LearningWorkspace() {
             {/* Main content */}
             <div className="learning-mode-content">
               <div className="learning-mode-kicker">
-                LEARNING MODE
+                {mode.kicker || 'LEARNING MODE'}
               </div>
               <h2>
                 {mode.title}

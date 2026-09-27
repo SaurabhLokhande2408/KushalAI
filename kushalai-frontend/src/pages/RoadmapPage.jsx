@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import PageHeader from '../components/common/PageHeader';
 import { Badge, Pill, Skeleton } from '../components/common/UI';
 import Roadmap from '../components/roadmap/Roadmap';
@@ -90,8 +91,15 @@ function RoadmapLoadingSkeleton() {
 }
 
 export default function RoadmapPage() {
-  const { roadmap } = useApp();
+  const { roadmap, showToast, roadmapCreationCourseId, clearRoadmapCreation } = useApp();
+  const location = useLocation();
+  const navigate = useNavigate();
   const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [newlyAddedCourseId, setNewlyAddedCourseId] = useState(() => (
+    location.state?.animateNewNode ? location.state.newlyAddedCourseId : null
+  ));
+  const creatingCourseId = roadmapCreationCourseId || newlyAddedCourseId;
+  const creatingNodeId = roadmap.find((node) => node.courseId === creatingCourseId)?.id ?? null;
 
   const [domainFilter, setDomainFilter] = useState('All');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -122,6 +130,23 @@ export default function RoadmapPage() {
     const timeoutId = window.setTimeout(() => setIsInitialLoading(false), 1000);
     return () => window.clearTimeout(timeoutId);
   }, []);
+
+  useEffect(() => {
+    if (!location.state?.animateNewNode) return;
+    navigate(location.pathname, { replace: true, state: null });
+  }, [location.pathname, location.state, navigate]);
+
+  useEffect(() => {
+    if (isInitialLoading || !creatingNodeId) return undefined;
+    const timeoutId = window.setTimeout(() => {
+      const node = roadmap.find((item) => item.id === creatingNodeId);
+      const course = node ? getCourseById(node.courseId) : null;
+      setNewlyAddedCourseId(null);
+      clearRoadmapCreation();
+      if (course) showToast(`${course.title} has been added to your learning path.`, 'success');
+    }, 1850);
+    return () => window.clearTimeout(timeoutId);
+  }, [isInitialLoading, creatingNodeId, roadmap, showToast, clearRoadmapCreation]);
 
   if (isInitialLoading) return <RoadmapLoadingSkeleton />;
 
@@ -198,7 +223,7 @@ export default function RoadmapPage() {
           3D ROADMAP STAGE
       ===================================================== */}
 
-      <div className="roadmap-stage">
+      <div className={`roadmap-stage${creatingNodeId ? ' is-building' : ''}`}>
 
         {/* outer depth rim */}
 
@@ -210,6 +235,7 @@ export default function RoadmapPage() {
 
           <Roadmap
             nodes={filtered}
+            creatingNodeId={creatingNodeId}
             onNodeClick={(node) =>
               setSelectedNodeId(node.id)
             }
@@ -390,6 +416,20 @@ export default function RoadmapPage() {
 
             0 28px 55px
               rgba(18,63,115,.045);
+        }
+
+        .roadmap-stage.is-building .roadmap-node:not(.is-creating) {
+          opacity: .52;
+          filter: saturate(.75);
+          transition: opacity .4s ease, filter .4s ease;
+        }
+
+        .roadmap-stage.is-building .roadmap-connectors {
+          opacity: .42;
+        }
+
+        .roadmap-stage.is-building .roadmap-connector-creating {
+          opacity: 1;
         }
 
 

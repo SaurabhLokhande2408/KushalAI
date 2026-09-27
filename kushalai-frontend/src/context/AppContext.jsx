@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { demoOfficer, demoAdmin } from '../data/mockUsers';
 import { roadmapNodes as initialRoadmap } from '../data/mockRoadmap';
+import { getCourseById } from '../data/mockCourses';
 import { quizTrendHistory as initialQuizHistory } from '../data/mockQuizzes';
 import { demoScenarioAssessmentAttempts } from '../data/mockScenarioAssessments';
 
@@ -106,6 +107,7 @@ export function AppProvider({ children }) {
   const [disciplineScore, setDisciplineScore] = useState(initialState.disciplineScore);
   const [disciplineLog, setDisciplineLog] = useState(initialState.disciplineLog);
   const [roadmap, setRoadmap] = useState(initialState.roadmap);
+  const [roadmapCreationCourseId, setRoadmapCreationCourseId] = useState(null);
   const [quizHistory, setQuizHistory] = useState(initialState.quizHistory);
   const [completedScenarioAssessments, setCompletedScenarioAssessments] = useState(
     initialState.completedScenarioAssessments
@@ -175,6 +177,8 @@ export function AppProvider({ children }) {
 
   function logout() {
     setUser(null);
+    setRoadmap((previous) => previous.filter((node) => !node.id.startsWith('n-course-')));
+    setRoadmapCreationCourseId(null);
   }
 
   function completeNode(nodeId) {
@@ -200,6 +204,49 @@ export function AppProvider({ children }) {
       ...log
     ].slice(0, 8));
     setCourseCompletion((c) => ({ ...c, completed: c.completed + 1, inProgress: Math.max(0, c.inProgress - 1) }));
+  }
+
+  function addCourseToRoadmap(courseId, prerequisiteCourseIds = [], status = 'locked') {
+    const existingNode = roadmap.find((node) => node.courseId === courseId);
+    if (existingNode) return { added: false, reason: 'duplicate', node: existingNode };
+
+    const course = getCourseById(courseId);
+    if (!course) return { added: false, reason: 'course-not-found' };
+
+    const prerequisiteIds = roadmap
+      .filter((node) => prerequisiteCourseIds.includes(node.courseId))
+      .map((node) => node.id);
+    const candidatePositions = [];
+    for (let y = 12; y <= 88; y += 8) {
+      for (let x = 12; x <= 88; x += 8) candidatePositions.push({ x, y });
+    }
+    const position = candidatePositions.reduce((best, candidate) => {
+      const nearestDistance = roadmap.reduce((nearest, node) => Math.min(
+        nearest,
+        Math.hypot((candidate.x - node.x) * 1.15, candidate.y - node.y)
+      ), Infinity);
+      return nearestDistance > best.distance
+        ? { ...candidate, distance: nearestDistance }
+        : best;
+    }, { x: 50, y: 50, distance: -1 });
+
+    const node = {
+      id: `n-course-${courseId}`,
+      courseId,
+      status: status === 'recommended' ? 'recommended' : 'locked',
+      domain: course.domain,
+      prereqs: prerequisiteIds,
+      x: position.x,
+      y: position.y
+    };
+
+    setRoadmap((previous) => [...previous, node]);
+    setRoadmapCreationCourseId(courseId);
+    return { added: true, node };
+  }
+
+  function clearRoadmapCreation() {
+    setRoadmapCreationCourseId(null);
   }
 
   function recordQuizResult(courseTitle, scorePercent) {
@@ -247,6 +294,9 @@ export function AppProvider({ children }) {
       disciplineLog,
       roadmap,
       setRoadmap,
+      addCourseToRoadmap,
+      roadmapCreationCourseId,
+      clearRoadmapCreation,
       completeNode,
       quizHistory,
       recordQuizResult,
@@ -258,7 +308,7 @@ export function AppProvider({ children }) {
       showToast,
       clearToast: () => setToast(null)
     }),
-    [user, disciplineScore, disciplineLog, roadmap, quizHistory, completedScenarioAssessments, scenarioAssessmentAttempts, courseCompletion, lastLoginDate, toast]
+    [user, disciplineScore, disciplineLog, roadmap, roadmapCreationCourseId, quizHistory, completedScenarioAssessments, scenarioAssessmentAttempts, courseCompletion, lastLoginDate, toast]
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

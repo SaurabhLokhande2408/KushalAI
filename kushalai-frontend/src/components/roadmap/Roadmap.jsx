@@ -24,7 +24,7 @@ function connectorColor(status) {
   return '#D8D8DB';
 }
 
-export default function Roadmap({ nodes, onNodeClick }) {
+export default function Roadmap({ nodes, onNodeClick, creatingNodeId }) {
   const isMobile = useIsMobile();
   const links = connectorsForNodes(nodes);
 
@@ -44,6 +44,7 @@ export default function Roadmap({ nodes, onNodeClick }) {
                 <RoadmapNode
                   node={node}
                   course={course}
+                  isCreating={node.id === creatingNodeId && !isMobile}
                   onClick={() => onNodeClick(node)}
                   style={{
                     position: 'static',
@@ -153,6 +154,8 @@ export default function Roadmap({ nodes, onNodeClick }) {
             return (
               <path
                 key={key}
+                className={link.to.id === creatingNodeId ? 'roadmap-connector-creating' : undefined}
+                pathLength={link.to.id === creatingNodeId ? 1 : undefined}
                 d={path}
                 vectorEffect="non-scaling-stroke"
                 fill="none"
@@ -178,6 +181,7 @@ export default function Roadmap({ nodes, onNodeClick }) {
                 key={node.id}
                 node={node}
                 course={course}
+                isCreating={node.id === creatingNodeId}
                 onClick={() => onNodeClick(node)}
                 style={{
                   left: `${node.x}%`,
@@ -309,6 +313,17 @@ export default function Roadmap({ nodes, onNodeClick }) {
           overflow: visible;
 
           pointer-events: none;
+        }
+
+        .roadmap-connector-creating {
+          stroke: var(--color-orange) !important;
+          stroke-dasharray: 1;
+          stroke-dashoffset: 1;
+          animation: roadmap-connector-draw .85s ease-out forwards;
+        }
+
+        @keyframes roadmap-connector-draw {
+          to { stroke-dashoffset: 0; }
         }
 
 

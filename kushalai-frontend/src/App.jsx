@@ -18,6 +18,8 @@ import RoadmapPage from './pages/RoadmapPage';
 import LearningWorkspace from './pages/LearningWorkspace';
 import DoubtsGuidance from './pages/DoubtsGuidance';
 import ScenarioAssessment from './pages/ScenarioAssessment';
+import ExploreCourses from './pages/ExploreCourses';
+import CourseRecommendation from './pages/CourseRecommendation';
 import Quiz from './pages/Quiz';
 import Profile from './pages/Profile';
 import AdminDashboard from './pages/AdminDashboard';
@@ -60,6 +62,8 @@ function AppRoutes() {
           <Route path="/learning-workspace" element={<LearningWorkspace />} />
           <Route path="/doubts-guidance" element={<DoubtsGuidance />} />
           <Route path="/scenario-assessment" element={<ScenarioAssessment />} />
+          <Route path="/explore-courses" element={<ExploreCourses />} />
+          <Route path="/explore-courses/:courseId" element={<CourseRecommendation />} />
           <Route path="/profile" element={<Profile />} />
         </Route>
 

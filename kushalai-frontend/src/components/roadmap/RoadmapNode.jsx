@@ -44,6 +44,7 @@ export default function RoadmapNode({
   course,
   onClick,
   style,
+  isCreating = false,
 }) {
   const s = STYLES[node.status];
   const Icon = ICONS[node.status];
@@ -66,6 +67,7 @@ export default function RoadmapNode({
       className={`
         roadmap-node
         roadmap-node-${node.status}
+        ${isCreating ? 'is-creating' : ''}
         ${hovered ? 'is-hovered' : ''}
       `}
       style={style}
@@ -215,6 +217,26 @@ export default function RoadmapNode({
           outline-offset: 8px;
 
           border-radius: 20px;
+        }
+
+        .roadmap-node.is-creating {
+          z-index: 20;
+          animation: roadmap-node-expand .82s cubic-bezier(.2,.8,.2,1) .65s both;
+        }
+
+        .roadmap-node.is-creating .roadmap-node-title {
+          animation: roadmap-node-title-in .35s ease 1.25s both;
+        }
+
+        @keyframes roadmap-node-expand {
+          0% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+          65% { opacity: .9; transform: translate(-50%, -50%) scale(1.1); }
+          100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        @keyframes roadmap-node-title-in {
+          from { opacity: 0; transform: translateY(5px); }
+          to { opacity: 1; transform: translateY(0); }
         }
 
 
