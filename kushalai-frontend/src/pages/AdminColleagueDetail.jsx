@@ -33,7 +33,7 @@ export default function AdminColleagueDetail() {
 
       <div className="grid grid-3" style={{ marginBottom: 'var(--space-4)' }}>
         <Card style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-          <Avatar name={officer.name} size={72} />
+          <Avatar name={officer.name} size={72} profileImage={officer.profileImage} />
           <h2 className="text-card-heading" style={{ marginTop: 12 }}>{officer.name}</h2>
           <p className="text-meta">{officer.designation}</p>
           <p className="text-meta">{officer.department}</p>

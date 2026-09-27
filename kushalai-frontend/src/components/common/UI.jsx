@@ -127,7 +127,7 @@ export function StatCard({ icon, label, value, sub }) {
   );
 }
 
-export function Avatar({ name, size = 40 }) {
+export function Avatar({ name, size = 40, profileImage }) {
   const initials = name
     ?.split(' ')
     .map((p) => p[0])
@@ -135,8 +135,10 @@ export function Avatar({ name, size = 40 }) {
     .join('')
     .toUpperCase();
   return (
-    <div className="avatar" style={{ width: size, height: size, fontSize: size * 0.38 }}>
-      {initials}
+    <div className="avatar" style={{ width: size, height: size, fontSize: size * 0.38, overflow: 'hidden' }}>
+      {profileImage ? (
+        <img src={profileImage} alt={name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+      ) : initials}
     </div>
   );
 }

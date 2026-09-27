@@ -272,6 +272,7 @@ export default function GuidanceChat({ conversation, onSendMessage }) {
           .guidance-send-button {
             min-height: 46px;
           }
+
         }
       `}</style>
     </section>

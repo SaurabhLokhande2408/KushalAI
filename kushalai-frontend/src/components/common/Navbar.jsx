@@ -143,7 +143,7 @@ export default function Navbar() {
                   onClick={() => setOpenMenu((current) => current === 'account' ? null : 'account')}
                 >
                   <div className="navbar-custom-avatar" style={{ width: '36px', height: '36px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
-                    <img src="/assets/pfp.jpg" alt={activeUser.name} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 20%', display: 'block' }} />
+                    <img src={activeUser.profileImage || '/assets/pfp.jpg'} alt={activeUser.name} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 20%', display: 'block' }} />
                   </div>
                   <span className="navbar-user-copy">
                     <span className="navbar-user-name">{activeUser.name}</span>
@@ -156,7 +156,7 @@ export default function Navbar() {
                   <div className="navbar-popover navbar-account-menu animate-popover" id="navbar-account-menu">
                     <div className="navbar-account-summary">
                       <div className="navbar-custom-avatar" style={{ width: '40px', height: '40px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
-                        <img src="/assets/pfp.jpg" alt={activeUser.name} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 20%', display: 'block' }} />
+                        <img src={activeUser.profileImage || '/assets/pfp.jpg'} alt={activeUser.name} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 20%', display: 'block' }} />
                       </div>
                       <div className="navbar-account-details">
                         <strong>{activeUser.name}</strong>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, Field, Input } from '../components/common/UI';
 import { useApp } from '../context/AppContext';
@@ -9,6 +9,15 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(true);
+  const [demoPickerOpen, setDemoPickerOpen] = useState(false);
+
+  useEffect(() => {
+    function handleKeyDown(event) {
+      if (event.key === 'Escape') setDemoPickerOpen(false);
+    }
+    if (demoPickerOpen) document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [demoPickerOpen]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -48,13 +57,41 @@ export default function Login() {
         New officer? <Link to="/register" style={{ color: 'var(--color-secondary)', fontWeight: 600 }}>Register here</Link>
       </p>
 
-      <div className="card" style={{ background: 'var(--color-offwhite)', marginTop: 'var(--space-3)' }}>
-        <div className="text-meta" style={{ fontWeight: 700, marginBottom: 10 }}>Demo access</div>
-        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          <Button variant="secondary" size="sm" onClick={() => handleDemo('officer')}>Demo officer</Button>
-          <Button variant="secondary" size="sm" onClick={() => handleDemo('admin')}>Demo admin</Button>
-        </div>
+      <div style={{ marginTop: 'var(--space-3)' }}>
+        <Button variant="secondary" block onClick={() => setDemoPickerOpen(true)}>Try Demo</Button>
       </div>
+
+      {demoPickerOpen && (
+        <div
+          className="login-demo-overlay"
+          onMouseDown={(event) => event.target === event.currentTarget && setDemoPickerOpen(false)}
+        >
+          <section className="login-demo-modal" role="dialog" aria-modal="true" aria-labelledby="login-demo-title">
+            <button
+              type="button"
+              className="login-demo-close"
+              onClick={() => setDemoPickerOpen(false)}
+              aria-label="Close demo role selection"
+            >
+              ×
+            </button>
+            <h2 id="login-demo-title">Welcome to KushalAI</h2>
+            <p>Choose how you'd like to explore the platform.</p>
+            <div className="login-demo-roles">
+              <button type="button" className="login-demo-role" onClick={() => handleDemo('officer')}>
+                <span className="login-demo-role-title">OFFICER</span>
+                <span className="login-demo-role-copy">Explore the competency and learning experience.</span>
+                <span className="login-demo-role-action">Continue <span aria-hidden="true">→</span></span>
+              </button>
+              <button type="button" className="login-demo-role" onClick={() => handleDemo('admin')}>
+                <span className="login-demo-role-title">ADMIN</span>
+                <span className="login-demo-role-copy">Explore the administration and management experience.</span>
+                <span className="login-demo-role-action">Continue <span aria-hidden="true">→</span></span>
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
     </div>
   );
 }

@@ -81,7 +81,9 @@ function createInitialState() {
   }
 
   return {
-    user: persisted?.user ?? null,
+    user: persisted?.user?.role === 'admin'
+      ? { ...persisted.user, name: demoAdmin.name, profileImage: demoAdmin.profileImage }
+      : persisted?.user ?? null,
     disciplineScore,
     disciplineLog,
     roadmap: persisted?.roadmap ?? initialRoadmap,

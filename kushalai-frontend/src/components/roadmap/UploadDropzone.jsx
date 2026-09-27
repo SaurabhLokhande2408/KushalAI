@@ -13,6 +13,8 @@ export default function UploadDropzone({
   title = 'Drop your course material here',
   description = 'Build a short assessment from your own notes, course material, or reference documents.',
   chooseLabel = 'Choose file',
+  accept = '.pdf,.jpg,.jpeg,.png',
+  formats = ['PDF', 'JPG', 'PNG'],
 }) {
   const inputRef = useRef(null);
   const [dragActive, setDragActive] = useState(false);
@@ -170,11 +172,12 @@ export default function UploadDropzone({
       </div>
 
       <div className="upload-dropzone-formats">
-        PDF
-        <span>·</span>
-        JPG
-        <span>·</span>
-        PNG
+        {formats.map((format, index) => (
+          <React.Fragment key={format}>
+            {index > 0 && <span>·</span>}
+            {format}
+          </React.Fragment>
+        ))}
       </div>
 
       <button
@@ -192,7 +195,7 @@ export default function UploadDropzone({
       <input
         ref={inputRef}
         type="file"
-        accept=".pdf,.jpg,.jpeg,.png"
+        accept={accept}
         hidden
         onChange={(e) =>
           handleFiles(e.target.files)

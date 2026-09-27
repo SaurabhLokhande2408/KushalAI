@@ -20,7 +20,8 @@ export const demoOfficer = {
 export const demoAdmin = {
   id: 'adm-001',
   role: 'admin',
-  name: 'Priya Sharma',
+  name: 'DEMO ADMIN',
+  profileImage: '/assets/admin-meenakshi.svg',
   officerId: 'OSS-1042',
   email: 'priya.sharma@demo.gov.in',
   designation: 'Training Administrator',

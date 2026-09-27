@@ -13,10 +13,19 @@ const departments = [
 
 const designations = ['Data Analyst', 'Statistical Officer', 'Junior Statistical Officer', 'Research Associate'];
 
-const names = [
-  'Arjun Mehta', 'Neha Kulkarni', 'Rohit Deshmukh', 'Sanya Iyer', 'Karan Bhosale',
-  'Ananya Rao', 'Vikram Joshi', 'Meera Nair', 'Aditya Pawar', 'Ritika Shah',
-  'Siddharth Patil', 'Kavya Menon'
+const profiles = [
+  { name: 'Ajun Mehra', gender: 'male', profileImage: '/assets/employee-arvind.svg' },
+  { name: 'Meena Subramanian', gender: 'female', profileImage: '/assets/employee-meena.svg' },
+  { name: 'Ramesh Chandra', gender: 'male', profileImage: '/assets/employee-ramesh.svg' },
+  { name: 'Savitri Menon', gender: 'female', profileImage: '/assets/employee-savitri.svg' },
+  { name: 'Prakash Bhosale', gender: 'male', profileImage: '/assets/employee-prakash.svg' },
+  { name: 'Anuradha Rao', gender: 'female', profileImage: '/assets/employee-anuradha.svg' },
+  { name: 'Vijay Joshi', gender: 'male', profileImage: '/assets/employee-vijay.svg' },
+  { name: 'Shailendra Kulkarni', gender: 'male', profileImage: '/assets/employee-shailendra.svg' },
+  { name: 'Lakshmi Narayanan', gender: 'female', profileImage: '/assets/employee-lakshmi.svg' },
+  { name: 'Mahendra Deshpande', gender: 'male', profileImage: '/assets/employee-mahendra.svg' },
+  { name: 'Sunita Iyer', gender: 'female', profileImage: '/assets/employee-sunita.svg' },
+  { name: 'Rajendra Patil', gender: 'male', profileImage: '/assets/employee-rajendra.svg' }
 ];
 
 function seededMastery(seed, offset) {
@@ -24,7 +33,7 @@ function seededMastery(seed, offset) {
   return Math.max(15, Math.min(96, v));
 }
 
-export const officers = names.map((name, idx) => {
+export const officers = profiles.map(({ name, gender, profileImage }, idx) => {
   const skillMastery = {};
   heatmapSkills.forEach((skill, sIdx) => {
     skillMastery[skill] = seededMastery(idx + 1, sIdx + 1);
@@ -42,6 +51,8 @@ export const officers = names.map((name, idx) => {
   return {
     id: `syn-${String(idx + 1).padStart(2, '0')}`,
     name,
+    gender,
+    profileImage,
     designation: designations[idx % designations.length],
     department: departments[idx % departments.length],
     disciplineScore,

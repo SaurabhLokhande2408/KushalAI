@@ -26,7 +26,7 @@ export default function ColleagueTable({ officers }) {
             <tr key={o.id} className="clickable" onClick={() => navigate(`/admin/colleagues/${o.id}`)}>
               <td>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <Avatar name={o.name} size={32} />
+                  <Avatar name={o.name} size={32} profileImage={o.profileImage} />
                   <span style={{ fontWeight: 600 }}>{o.name}</span>
                 </div>
               </td>
